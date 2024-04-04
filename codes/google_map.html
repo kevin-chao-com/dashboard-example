@@ -1,0 +1,459 @@
+<html>
+<head>
+
+  <title>Google Maps Multiple Markers</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaghQ3ZQQ19PsDidFn9FQA0iwCyi5V0YQ&callback=initMap" type="text/javascript"></script>
+</head>
+<body>
+  <div id="divmap" style="height: 600px; width: 800px;">
+</div>
+<script type="text/javascript">
+
+// Inout Triggered tremor informaiton
+// Triggered tremor observations from my studies
+    // Taiwan
+    var ref_Taiwan_S = 'Triggered tremor:<b> Taiwan - southern Central Range</b><p></p>'+
+    'Triggered tremor location: Lat:23.10; Lon:120.84; Dep=25.0km<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_GJI_2012.pdf" target="_blank">Chao et al., GJI, 2012</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Peng_Chao_GJI_2008.pdf" target="_blank">Peng and Chao, GJI, 2008</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Tang_etal_GRL_2010.pdf" target="_blank">Tang et al., GRL, 2010</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Tang_etal_EPSL_2013.pdf" target="_blank">Tang et al., EPSL, 2013</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Sun_etal_BSSA_2015.pdf" target="_blank">Sun et al., BSSA, 2015</a><br>'+
+    '<a href="http://www.climbing.org/kchao/papers/Chao_etal_JGR_2017.pdf" target="_blank">Chao et al., JGR, 2017</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Aguiar_etal_GRL_2017.pdf" target="_blank">Aguiar et al., GRL, 2017</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2012GL051015" target="_blank">Gonzalez-Huizar et al., GRL, 2012</a><br>'
+
+    var ref_Taiwan_N = 'Triggered tremor:<b> Taiwan - northern Central Range</b><p></p>'+
+    'Triggered tremor location: Lat:24.17; Lon:121.60<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_GJI_2012.pdf" target="_blank">Chao et al., GJI, 2012</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'
+
+    var ref_Taiwan_SE = 'Triggered tremor:<b> Taiwan - southeastern offshore</b><p></p>'+
+    '(Not published yet)<br>'
+
+    // Japan
+    var ref_Japan_Ryukyu = 'Triggered tremor:<b> Japan: Ryukyu - southwestern</b><p></p>'+
+    'Location @BO.YNG staion: Lat:24.455; Lon:123.007<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publication:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'
+
+    var ref_Japan_Kyushu_SE = 'Triggered tremor:<b> Japan: Kyushu - southeastern</b><p></p>'+
+    'Triggered tremor location: Lat:31.81; Lon:131.82; Dep=15.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publication:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'
+
+    var ref_Japan_Kyushu_W = 'Triggered tremor:<b> Japan: Kyushu - west</b><p></p>'+
+    'Triggered tremor location: Lat:32.3145; Lon:130.4213; Dep=18.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'+
+    '<a href="https://link.springer.com/article/10.1186/s40623-015-0346-4" target="_blank">Miyazaki et al., EPS, 2015</a><br>'
+
+    var ref_Japan_Shikoku_W = 'Triggered tremor:<b> Japan: Shikoku - west</b><p></p>'+
+    'Triggered tremor location: Lat:33.49; Lon:132.77; Dep=35.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL022539" target="_blank">Miyazawa and Mori, GRL, 2005</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL025087" target="_blank">Miyazawa and Mori, GRL, 2006</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2006JB004890" target="_blank">Miyazawa and Brodsky, JGR, 2008</a><br>'+
+    '<a href="https://link.springer.com/article/10.1186/BF03352858" target="_blank">Miyazawa et al., EPS, 2008</a><br>'+
+    '<a href="https://link.springer.com/article/10.5047/eps.2012.07.003" target="_blank">Miyazawa, EPS, 2012</a><br>'
+
+    var ref_Japan_Shikoku_E = 'Triggered tremor:<b> Japan: Shikoku - east</b><p></p>'+
+    'Triggered tremor location: Lat:33.94; Lon:134.21; Dep=35.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL025087" target="_blank">Miyazawa and Mori, GRL, 2006</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2006JB004890" target="_blank">Miyazawa and Brodsky, JGR, 2008</a><br>'
+
+    var ref_Japan_Kii_S = 'Triggered tremor:<b> Japan: Kii - south</b><p></p>'+
+    'Triggered tremor location: Lat:33.87; Lon:135.25; Dep=35.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL022539" target="_blank">Miyazawa and Mori, GRL, 2005</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL025087" target="_blank">Miyazawa and Mori, GRL, 2006</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2006JB004890" target="_blank">Miyazawa and Brodsky, JGR, 2008</a><br>'
+
+    var ref_Japan_Kii_N = 'Triggered tremor:<b> Japan: Kii - north</b><p></p>'+
+    'Triggered tremor location: Lat:34.47; Lon:136.41; Dep=35.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL025087" target="_blank">Miyazawa and Mori, GRL, 2006</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2006JB004890" target="_blank">Miyazawa and Brodsky, JGR, 2008</a><br>'
+
+    var ref_Japan_Tokai = 'Triggered tremor:<b> Japan: Tokai</b><p></p>'+
+    'Triggered tremor location: Lat:35.04; Lon:136.98; Dep=35.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL022539" target="_blank">Miyazawa and Mori, GRL, 2005</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005GL025087" target="_blank">Miyazawa and Mori, GRL, 2006</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2006JB004890" target="_blank">Miyazawa and Brodsky, JGR, 2008</a><br>'
+
+    var ref_Japan_Kanto = 'Triggered tremor:<b> Japan: Kanto</b><p></p>'+
+    'Triggered tremor location: Lat:36.3445; Lon:138.8242; Dep=20.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publication:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'
+
+    var ref_Hokkaido_C = 'Triggered tremor:<b> Japan: Hokkaido - central</b><p></p>'+
+    'Triggered tremor location: Lat:43.17; Lon:142.73; Dep=15.0km<br>'+
+    '(Reference: Table 2 of Chao and Obara, JGR, 2016)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_Obara_JGR_2016.pdf" target="_blank">Chao and Obara, JGR, 2016</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2012GL053339" target="_blank">Obara, GRL, 2012</a><br>'
+
+    var ref_Hokkaido_N = 'Triggered tremor:<b> Japan: Hokkaido - north</b><p></p>'+
+    'Triggered tremor location: Lat:44.98; Lon:142.35<br>'+
+    '(Reference: Obara, GRL, 2012)</a><p></p>'+
+    'Publication:<br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2012GL053339" target="_blank">Obara, GRL, 2012</a><br>'
+
+    // Indonesia
+    var ref_Indonesia_Sumbawa = 'Triggered tremor:<b> Indonesia: Sumbawa</b><p></p>'+
+    'Location @GE.PLAI staion: Lat:-8.8275; Lon:117.7765<br>'+
+    '(Fuchs et al., GRL, 2014)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2014GL060312" target="_blank">Fuchs et al., GRL, 2014</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016GL069955" target="_blank">Bansal et al., GRL, 2016</a><br>'
+
+    var ref_Indonesia_W = 'Triggered tremor:<b> Indonesia: west</b><p></p>'+
+    'Location @GE.UGM staion: Lat:-7.9125; Lon:110.5231<br>'+
+    '(Bansal et al., GRL, 2016)</a><p></p>'+
+    'Publication:<br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016GL069955" target="_blank">Bansal et al., GRL, 2016</a><br>'
+
+    var ref_Indonesia_NE = 'Triggered tremor:<b> Indonesia: northeastern</b><p></p>'+
+    'Location @GE.SANI staion: Lat:-2.0496; Lon:125.9881<br>'+
+    '(Bansal et al., GRL, 2016)</a><p></p>'+
+    'Publication:<br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016GL069955" target="_blank">Bansal et al., GRL, 2016</a><br>'
+
+    // Italy
+    var ref_Sicily = 'Triggered tremor:<b> Italy - Sicily</b><p></p>'+
+    'Chao et al., in prep.<br>'
+
+    // New Zealand
+    var ref_New_Zealand_Hikurangi_C = 'Triggered tremor:<b> New Zealand: Hikurangi - central</b><p></p>'+
+    'Location @NZ.BKZ staion: Lat:-39.1657; Lon:176.4930<br>'+
+    '(Reference: Table 1 of Chao and Yu, SRL, 2018)<p></p>'+
+    'Publications:<br>'+
+    '<a href="http://www.climbing.org/kchao/papers/Chao_Yu_SRL_2018.pdf" target="_blank">Chao and Yu, SRL, 2018</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Fry_etal_GRL_2011.pdf" target="_blank">Fry et al., GRL, 2011</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'
+
+    var ref_New_Zealand_Hikurangi_N = 'Triggered tremor:<b> New Zealand: Hikurangi - north</b><p></p>'+
+    'Location @NZ.PUZ staion: Lat:-38.0715; Lon:178.2570<br>'+
+    '(Reference: Table 1 of Chao and Yu, SRL, 2018)<p></p>'+
+    'Publication:<br>'+
+    '<a href="http://www.climbing.org/kchao/papers/Chao_Yu_SRL_2018.pdf" target="_blank">Chao and Yu, SRL, 2018</a><br>'
+
+    var ref_New_Zealand_Northland = 'Triggered tremor:<b> New Zealand: Northland</b><p></p>'+
+    'Location @NZ.OUZ staion: Lat:-35.2197; Lon:173.5960<br>'+
+    '(Reference: Table 1 of Chao and Yu, SRL, 2018)<p></p>'+
+    'Publications:<br>'+
+    '<a href="http://www.climbing.org/kchao/papers/Chao_Yu_SRL_2018.pdf" target="_blank">Chao and Yu, SRL, 2018</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Peng_etal_BSSA_2018.pdf" target="_blank">Peng et al., BSSA, 2018</a><br>'
+
+    var ref_New_Zealand_Kaikoura = 'Triggered tremor:<b> New Zealand: Kaikoura</b><p></p>'+
+    'Location @NZ.LTZ staion: Lat:-42.7817; Lon:172.2710<br>'+
+    '(Reference: Table 1 of Chao and Yu, SRL, 2018)<p></p>'+
+    'Publication:<br>'+
+    '<a href="http://www.climbing.org/kchao/papers/Chao_Yu_SRL_2018.pdf" target="_blank">Chao and Yu, SRL, 2018</a><br>'
+
+    var ref_New_Zealand_AlpineFault_C = 'Triggered tremor:<b> New Zealand: Alpine Fault - central</b><p></p>'+
+    'Location @NZ.FOZ staion: Lat:-43.5321; Lon:169.8150<br>'+
+    '(References: Table 1 of Chao and Yu, SRL, 2018)<p></p>'+
+    'Publications:<br>'+
+    '<a href="http://www.climbing.org/kchao/papers/Chao_Yu_SRL_2018.pdf" target="_blank">Chao and Yu, SRL, 2018</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2014GC005436" target="_blank">Chamberlain et al., G3, 2014</a><br>'+
+    '<a href="https://www.sciencedirect.com/science/article/pii/S0012821X1730732X?via%3Dihub" target="_blank">Baratin et al., EPSL, 2018</a><br>'
+
+    var ref_New_Zealand_Southland = 'Triggered tremor:<b> New Zealand: ASouthland</b><p></p>'+
+    'Location @NZ.DCZ staion: Lat:-45.4647; Lon:167.1540<br>'+
+    '(Reference: Table 1 of Chao and Yu, SRL, 2018)<p></p>'+
+    'Publication:<br>'+
+    '<a href="http://www.climbing.org/kchao/papers/Chao_Yu_SRL_2018.pdf" target="_blank">Chao and Yu, SRL, 2018</a><br>'
+
+    var ref_New_Zealand_Auckland = 'Triggered tremor:<b> New Zealand: Auckland</b><p></p>'+
+    'Location @NZ.GRZ staion: Lat:-36.2502; Lon:175.458<br>'+
+    '(Reference: Peng et al., BSSA, 2018)<p></p>'+
+    'Publication:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Peng_etal_BSSA_2018.pdf" target="_blank">Peng et al., BSSA, 2018</a><br>'
+
+    // Antarctica
+    var ref_Antarctica = 'Triggered tremor:<b> Antarctica</b><p></p>'+
+    'Location @YT.HOWD staion: Lat:-77.5286; Lon:-86.7694<br>'+
+    '(Reference: Peng et al., NGEO, 2014)<p></p>'+
+    'Publication:<br>'+
+    '<a href="https://www.nature.com/articles/ngeo2212" target="_blank">Peng et al., NGEO, 2014</a><br>'
+
+    // South America
+    var ref_Chile_S = 'Triggered tremor:<b> Chile - south</b><p></p>'+
+    'Chao et al., in prep.<br>'
+
+    var ref_Ecuador = 'Triggered tremor:<b> Ecuador</b><p></p>'+
+    'Chao et al., in prep.<br>'
+
+    var ref_Colombia = 'Triggered tremor:<b> Colombia - central</b><p></p>'+
+    '(Not published yet)<br>'
+
+    var ref_Haiti = 'Triggered tremor:<b> Haiti</b><p></p>'+
+    'Publication:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Aiken_etal_EPSL_2016.pdf" target="_blank">Aiken et al., EPSL, 2016</a><br>'
+
+    var ref_Cuba = 'Triggered tremor:<b> Cuba</b><p></p>'+
+    'Location @CU.GTBY staion: Lat:19.94; Lon:-74.74<br>'+
+    '(Reference: Peng et al., BSSA, 2013)<p></p>'+
+    'Publication:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Peng_etal_BSSA_2013.pdf" target="_blank">Peng et al., BSSA, 2013</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2012GL051015" target="_blank">Gonzalez-Huizar et al., GRL, 2012</a><br>'
+
+    var ref_Guerrero = 'Triggered tremor:<b> Mexico: Guerrero</b><p></p>'+
+
+    'Publication:<br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2012JB009160" target="_blank">Zigone et al., JGR, 2012</a><br>'
+
+
+    // California
+    var ref_SJF = 'Triggered tremor:<b> California - southern: San Jacinto Fault</b><p></p>'+
+    'Location: Lat:33.81; Lon:-117.00; dep=25km;<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2012.pdf" target="_blank">Chao et al., BSSA, 2012</a><br>'+
+    '<a href="http://science.sciencemag.org/content/319/5860/173" target="_blank">Gomberg et al., Science, 2008</a><br>'+
+    '<a href="https://pubs.geoscienceworld.org/ssa/bssa/article-abstract/103/4/2482/331681" target="_blank">Wang et al., BSSA, 2013</a><br>'
+
+    var ref_Parkfield = 'Triggered tremor:<b> California - central: Parkfield-Cholame section of the San Andreas Fault</b><p></p>'+
+    'Location: Lat:36.00; Lon:-120.90; dep=25km;<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2012.pdf" target="_blank">Chao et al., BSSA, 2012</a><br>'+
+    '<a href="https://pubs.geoscienceworld.org/ssa/bssa/article-abstract/103/2B/1541/331685" target="_blank">Hill et al., BSSA, 2013</a><br>'+
+    '<a href="https://www.nature.com/articles/ngeo1141" target="_blank">Shelly et al., NGEO, 2011</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2010GL045462" target="_blank">Peng et al., GRL, 2010</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2010GL044660" target="_blank">Guilhem et al., GRL, 2010</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2008JB006062" target="_blank">Ghosh et al., JGR, 2009</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2008JB006049" target="_blank">Peng et al., JGR, 2009</a><br>'+
+    '<a href="http://science.sciencemag.org/content/319/5860/173" target="_blank">Gomberg et al., Science, 2008</a><br>'
+
+    var ref_NC = 'Triggered tremor:<b> California - northern: Calaveras Fault</b><p></p>'+
+    'Location: Lat:37.34; Lon:-121.72; dep=25km;<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2012.pdf" target="_blank">Chao et al., BSSA, 2012</a><br>'+
+    '<a href="http://science.sciencemag.org/content/319/5860/173" target="_blank">Gomberg et al., Science, 2008</a><br>'
+
+    // Cascadia
+    var ref_Oregon_S = 'Triggered tremor:<b> Cascadia: Oregon - south @BK.HUMO station</b><p></p>'+
+    'Location @BK.HUMO station: Lat:42.61; Lon:-122.96;<br>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2012.pdf" target="_blank">Chao et al., BSSA, 2012</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2012GL051015" target="_blank">Gonzalez-Huizar et al., GRL, 2012</a><br>'
+
+    var ref_WA = 'Triggered tremor:<b> Cascadia: Washington State</b><p></p>'+
+    'Publications:<br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2009JB007011" target="_blank">Gomberg et al., JGR, 2010</a><br>'
+
+    var ref_Vancouver_N = 'Triggered tremor:<b> Cascadia: Vancouver Island: south</b><p></p>'+
+    'Location: Lat:50.31; Lon:-127.39; dep=35km;<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2012.pdf" target="_blank">Chao et al., BSSA, 2012</a><br>'+
+    '<a href="https://www.nature.com/articles/nature06017" target="_blank">Rubinstein et al., Nature, 2007</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2008JB005875" target="_blank">Rubinstein et al., JGR, 2009</a><br>'
+
+    var ref_Vancouver_S = 'Triggered tremor:<b> Cascadia: Vancouver Island: south</b><p></p>'+
+    'Location: Lat:48.8; Lon:-124.3; dep=18km;<br>'+
+    '(Reference: <a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2008JB005875" target="_blank">Table 2 of Rubinstein et al., JGR, 2009</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2008JB005875" target="_blank">Rubinstein et al., JGR, 2009</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016GL069755" target="_blank">Kundu et al., GRL, 2016</a><br>'
+
+    // Yellowstone, H17A
+    var ref_Yellowstone = 'Triggered tremor:<b> Yellowstone @TA.H17A station</b><p></p>'+
+    'Location @TA.H17A station: Lat:44.3951; Lon:-110.576;<br><p></p>'+
+    'Publications:<br>'+
+    'Tang et al., JGR, 2018, under review<br>'
+
+    var ref_Alaska_CS = 'Triggered tremor:<b> Alaska - central-south</b><p></p>'+
+    'Location: Lat:61.67; Lon:-146.06; dep=45km;<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'+
+    '<a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2013JB010273" target="_blank">Gomberg and Prejean, JGR, 2013</a><br>'
+
+    var ref_Aleutian = 'Triggered tremor:<b> Aleutian</b><p></p>'+
+    'Location: Lat:53.59; Lon:-166.90; dep=45km;<br>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_103-2B/2012171-esupp/index.html" target="_blank">Table S1 of Chao et al., BSSA, 2013</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Chao_etal_BSSA_2013.pdf" target="_blank">Chao et al., BSSA, 2013</a><br>'
+
+    // Canada
+    var ref_QCM = 'Triggered tremor:<b> Canada: Queen Charlotte Margin</b><p></p>'+
+    'Location: Lat:52.8; Lon:-132.12; dep=25km;<br>'+
+    '(Reference: <a href="https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fgrl.50220&file=TableS2.pdf" target="_blank">Table S2 of Aiken et al., GRL, 2013)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="http://climbing.org/kchao/papers/Aiken_etal_GRL_2013.pdf" target="_blank">Aiken et al., GRL, 2013</a><br>'
+
+    var ref_Denali= 'Triggered tremor:<b> Canada: Denali Fault- eastern @CN.HYT station</b><p></p>'+
+    'Location: Lat:60.825; Lon:-137.50;<br><p></p>'+
+    '(Reference: <a href="http://www.seismosoc.org/Publications/BSSA_html/bssa_105-2B/2014156-esupp/index.html" target="_blank">Supplement to Aiken et al., BSSA, 2015)</a><p></p>'+
+    'Publications:<br>'+
+    '<a href="https://pubs.geoscienceworld.org/ssa/bssa/article-abstract/105/2B/1165/331778" target="_blank">Aiken et al., BSSA, 2015</a><br>'
+
+
+    //
+    var locations = [
+      // Taiwan
+      [ref_Taiwan_SE, 21.62, 121.14 , 4],
+      [ref_Taiwan_N, 24.17, 121.60, 4],
+      [ref_Taiwan_S, 23.10, 120.84, 4],
+
+      // Japan
+      [ref_Japan_Ryukyu, 24.455, 123.007, 4],
+      [ref_Japan_Kyushu_SE, 31.81, 131.82, 4],
+      [ref_Japan_Kyushu_W, 32.3145, 130.4213, 4],
+      [ref_Japan_Shikoku_W, 33.49, 132.77, 4],
+      [ref_Japan_Shikoku_E, 33.94, 134.21, 4],
+      [ref_Japan_Kii_S, 33.87, 135.25, 4],
+      [ref_Japan_Kii_N, 34.47, 136.41, 4],
+      [ref_Japan_Tokai, 35.04, 136.98, 4],
+      [ref_Japan_Kanto, 36.3445, 138.8242, 4],
+      [ref_Hokkaido_C, 43.17, 142.73, 4],
+
+      // Alaska
+      [ref_Alaska_CS, 61.67, -146.06, 4],
+      [ref_Aleutian,53.59, -166.90, 4],
+
+      // Canada
+      [ref_Vancouver_N, 50.31, -127.39, 4],
+      [ref_QCM, 52.8, -132.12, 4],
+
+      // Cascadia
+      [ref_Oregon_S, 42.61, -122.96, 4],
+
+      // California
+      [ref_NC, 37.34, -121.72, 4],
+      [ref_Parkfield, 36.00, -120.90, 4],
+      [ref_SJF, 33.81, -117.00, 4],
+
+      // New Zealand
+      [ref_New_Zealand_Hikurangi_C, -39.1657,  176.4930, 4],
+      [ref_New_Zealand_Hikurangi_N, -38.0715, 178.2570, 4],
+      [ref_New_Zealand_Northland, -35.2197, 173.5960, 4],
+      [ref_New_Zealand_Kaikoura, -42.7817, 172.2710, 4],
+      [ref_New_Zealand_AlpineFault_C, -43.5321, 169.8150, 4],
+      [ref_New_Zealand_Southland, -45.4647, 167.1540, 4],
+      [ref_New_Zealand_Auckland, -36.2502, 175.458, 4],
+
+      // Central and South America
+      [ref_Cuba, 19.94, -74.74, 4],
+      [ref_Haiti, 18.3117, -72.8233, 4],
+      [ref_Colombia, 6.1908,-75.5288, 4],
+      [ref_Ecuador, 0.2376,-78.4508, 4],
+      [ref_Chile_S, -45.83, -74.21, 4],
+
+      // USA
+      [ref_Yellowstone, 44.3951, -110.576, 4],
+
+      // Italy
+      // ['Italy: Sicily @IV.MMME station', 37.9352, 15.2539, 4],
+      [ref_Sicily, 37.9352, 15.2539, 4],
+
+    ];
+
+// Triggered tremor observations from other studies
+    var locations_others = [
+      // Japan
+      [ref_Hokkaido_N, 44.98, 142.35, 4],
+
+      // Indonesia
+      [ref_Indonesia_Sumbawa, -8.8275, 117.7765, 4],
+      [ref_Indonesia_W, -7.9125, 110.5231, 4],
+      [ref_Indonesia_NE, -2.0496, 125.9881, 4],
+
+      // Canada
+      [ref_Denali, 60.825, -137.5, 4],
+
+      // Cascadia
+      [ref_WA, 48.00, -123.50, 4],
+      [ref_Vancouver_S, 48.8, -124.3, 4],
+
+      // South America
+      [ref_Guerrero, 19.33,-99.18, 4],
+
+      // Antarctica
+      [ref_Antarctica, -77.5286, -86.7694, 4],
+
+    ];
+
+// setting for Google maps
+    var map = new google.maps.Map(document.getElementById('divmap'), {
+      zoom: 1.65,
+      center: new google.maps.LatLng(0, 150),
+  //    mapTypeId: google.maps.MapTypeId.ROADMAP,
+      panControl:true,
+      zoomControl:true,
+      mapTypeControl:true,
+      scaleControl:true,
+      streetViewControl:true,
+      overviewMapControl:true,
+      rotateControl:true
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          //  icon: {path: google.maps.SymbolPath.CIRCLE, scale: 6},
+          // ref: https://stackoverflow.com/questions/32651238/how-to-change-marker-color-google-maps
+        });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations_others[i][1], locations_others[i][2]),
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+          //  icon: {path: google.maps.SymbolPath.CIRCLE, scale: 6},
+          // ref: https://stackoverflow.com/questions/32651238/how-to-change-marker-color-google-maps
+        });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations_others[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+  </script>
+</body>
+</html>
